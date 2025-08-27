@@ -7,7 +7,7 @@ import numpy as np
 
 # Load YOLO model only once
 
-model = YOLO(r"app/model/best.pt")
+model = YOLO(r"waste_classification_app/model/best.pt")
 
 def run_inference(pil_image, conf_threshold: float):
     """
