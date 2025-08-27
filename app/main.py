@@ -1,6 +1,6 @@
 import streamlit as st
 from PIL import Image
-import random
+
 from mapping import get_bin_info 
 from inference import run_inference
 
