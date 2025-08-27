@@ -1,5 +1,5 @@
 from ultralytics import YOLO
-import cv2
+from PIL import Image
 import numpy as np
 # -------------------------
 # 1. Load the model ONCE
@@ -9,32 +9,24 @@ import numpy as np
 
 model = YOLO(r"..\..\model\best.pt")
 
-
-# -------------------------
-# 2. Inference Function
-# -------------------------
-
-from ultralytics import YOLO
-import cv2
-import numpy as np
-
-model = YOLO(r"..\..\model\best.pt")
-
 def run_inference(pil_image, conf_threshold: float):
     """
     Runs YOLO inference on a PIL image and returns the predicted class 
     with the highest probability above the given confidence threshold.
     If no detections, returns 'No object detected'.
     """
-    # Convert PIL -> NumPy (RGB)
-    img = np.array(pil_image)
-    # Convert RGB -> BGR
-    img = cv2.cvtColor(img, cv2.COLOR_RGB2BGR)
-    # Resize
-    img_resized = cv2.resize(img, (640, 640))
+    # Ensure image is RGB
+    img = pil_image.convert("RGB")
+
+    # Resize to 640x640
+    img_resized = img.resize((640, 640))
+
+    # Convert PIL image -> NumPy array
+    img_array = np.array(img_resized)
+
 
     # Run inference
-    results = model(img_resized)
+    results = model(img_array)
 
     best_class = None
     best_conf = 0.0
