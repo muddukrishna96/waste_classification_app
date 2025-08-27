@@ -8,7 +8,7 @@ from inference import run_inference
 
 # Streamlit UI
 st.set_page_config(page_title="Smart Waste Classifier", page_icon="🗑️", layout="centered")
-st.title("♻️ Smart Waste Classification")
+st.title(" Smart Waste Classification")
 st.write("Upload or capture a waste item image and I’ll suggest the right bin.")
 
 # Upload or capture image
@@ -28,12 +28,12 @@ if img_source:
 
     detected_class = run_inference(image,0.2)
     if detected_class == "No object detected":
-        st.success(f"🧾 Detected: ** Nodedection is possible at this mmoment for the object you choosed this will be added in further update **")
-        st.info(f"✅ Suggested Bin: ** No suggestions at the moment **")
+        st.success(f" Detected: ** No dedection is possible at this moment for the object you choosed this will be added in further update **")
+        st.info(f" Suggested Bin: ** No suggestions at the moment **")
     else:
         bin_suggestion = get_bin_info(detected_class) 
-        st.success(f"🧾 Detected: **{detected_class}**")
-        st.info(f"✅ Suggested Bin: **{bin_suggestion}**")
+        st.success(f" Detected: **{detected_class}**")
+        st.info(f" Suggested Bin: **{bin_suggestion}**")
     
         
 

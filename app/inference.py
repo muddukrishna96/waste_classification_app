@@ -20,7 +20,7 @@ import numpy as np
 
 model = YOLO(r"..\..\model\best.pt")
 
-def run_inference(pil_image, conf_threshold: float = 0.7):
+def run_inference(pil_image, conf_threshold: float):
     """
     Runs YOLO inference on a PIL image and returns the predicted class 
     with the highest probability above the given confidence threshold.
