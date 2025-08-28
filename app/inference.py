@@ -12,7 +12,7 @@ import numpy as np
 # Load YOLO model only once
 
 model = YOLO("model/best.pt")
-
+#model = YOLO(r"..\model\best.pt") # local inference
 def run_inference(pil_image, conf_threshold: float):
     """
     Runs YOLO inference on a PIL image and returns the predicted class 
@@ -32,17 +32,15 @@ def run_inference(pil_image, conf_threshold: float):
     # Run inference
     results = model(img_array)
 
-    best_class = None
-    best_conf = 0.0
+    predicted_classes = []
 
     for r in results:
         for box in r.boxes:
             conf = float(box.conf.cpu().item())
-            if conf >= conf_threshold and conf > best_conf:
-                best_conf = conf
-                best_class = model.names[int(box.cls)]
+            if conf >= conf_threshold:
+                predicted_classes.append(model.names[int(box.cls)])
 
-    if best_class:
-        return best_class
+    if predicted_classes:
+        return predicted_classes
     else:
-        return "No object detected"
+        return ["No object detected"]

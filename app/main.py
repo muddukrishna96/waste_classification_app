@@ -26,15 +26,16 @@ if img_source:
 
     # YOLO inference 
 
-    detected_class = run_inference(image,0.2)
-    if detected_class == "No object detected":
+    detected_classes = run_inference(image,0.2)
+    if detected_classes == "No object detected":
         st.success(f" Detected: ** No dedection is possible at this moment for the object you choosed this will be added in further update **")
         st.info(f" Suggested Bin: ** No suggestions at the moment **")
     else:
-        bin_suggestion = get_bin_info(detected_class) 
-        st.success(f" Detected: **{detected_class}**")
-        st.info(f" Suggested Bin: **{bin_suggestion}**")
-    
+        for detected_class in detected_classes:
+            bin_suggestion = get_bin_info(detected_class)
+            st.success(f" Detected: **{detected_class}**")
+            st.info(f"Suggested Bin: **{bin_suggestion}**")
+        
         
 
 
