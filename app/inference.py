@@ -1,6 +1,7 @@
 
 from ultralytics import YOLO
 from PIL import Image
+import cv2
 import numpy as np
 # -------------------------
 # 1. Load the model ONCE
@@ -34,13 +35,29 @@ def run_inference(pil_image, conf_threshold: float):
 
     predicted_classes = []
 
+    # Draw bounding boxes on image
     for r in results:
         for box in r.boxes:
             conf = float(box.conf.cpu().item())
             if conf >= conf_threshold:
-                predicted_classes.append(model.names[int(box.cls)])
+                cls = model.names[int(box.cls)]
+                predicted_classes.append(cls)
+
+                # Bounding box coords
+                x1, y1, x2, y2 = map(int, box.xyxy[0].cpu().numpy())
+
+                # Draw rectangle
+                cv2.rectangle(img_array, (x1, y1), (x2, y2), (0, 255, 0), 2)
+
+                # Label with class + confidence
+                label = f"{cls} {conf:.2f}"
+                cv2.putText(img_array, label, (x1, y1 - 10),
+                            cv2.FONT_HERSHEY_SIMPLEX, 0.5, (255, 0, 0), 2)
+
+    # Convert back to PIL for display
+    boxed_image = Image.fromarray(img_array)
 
     if predicted_classes:
-        return predicted_classes
+        return predicted_classes, boxed_image
     else:
-        return ["No object detected"]
+        return ["No object detected"], pil_image

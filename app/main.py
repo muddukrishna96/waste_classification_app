@@ -22,16 +22,19 @@ print("image uploded ",type(img_source))
 if img_source:
     image = Image.open(img_source)
     st.image(image, caption="Your Image", use_column_width=True)
-    print(" image pil ", type(image))
+    
 
     # YOLO inference 
 
-    detected_classes = run_inference(image,0.2)
+    detected_classes, boxed_image = run_inference(image,0.2)
+
     if detected_classes == "No object detected":
+        
         st.success(f" Detected: ** No dedection is possible at this moment for the object you choosed this will be added in further update **")
         st.info(f" Suggested Bin: ** No suggestions at the moment **")
     else:
         for detected_class in detected_classes:
+            st.image(boxed_image, caption="Detections", use_column_width=True)
             bin_suggestion = get_bin_info(detected_class)
             st.success(f" Detected: **{detected_class}**")
             st.info(f"Suggested Bin: **{bin_suggestion}**")
